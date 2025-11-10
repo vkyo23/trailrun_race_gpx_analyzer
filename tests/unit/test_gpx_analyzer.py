@@ -89,11 +89,34 @@ class TestGPXAnalyzer:
         """Test elevation smoothing."""
         # Create noisy elevation data with enough points for smoothing (>= 20)
         # Smoothing is skipped for datasets < 20 points to preserve elevation changes in short tracks
-        elevations = np.array([
-            100, 102, 99, 101, 103, 98, 100, 102, 101, 99,
-            100, 103, 99, 102, 104, 98, 101, 103, 100, 99,
-            101, 102, 100, 101
-        ])
+        elevations = np.array(
+            [
+                100,
+                102,
+                99,
+                101,
+                103,
+                98,
+                100,
+                102,
+                101,
+                99,
+                100,
+                103,
+                99,
+                102,
+                104,
+                98,
+                101,
+                103,
+                100,
+                99,
+                101,
+                102,
+                100,
+                101,
+            ]
+        )
 
         smoothed = GPXAnalyzer._smooth_elevation_advanced(elevations)
 

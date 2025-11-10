@@ -23,7 +23,7 @@ def test_app_loads(page: Page) -> None:
     page.wait_for_selector("h1", timeout=10000)
 
     # Check for the main title (use first since there might be multiple h1 elements)
-    expect(page.locator("h1").first).to_contain_text("Trail Running GPX Analyzer")
+    expect(page.locator("h1").first).to_contain_text("Trail Running Race GPX Analyzer")
 
 
 @pytest.mark.e2e
@@ -130,35 +130,51 @@ def test_add_marker_with_coordinates(page: Page, sample_gpx_file) -> None:
 
     # Select coordinate input method
     page.locator("label").filter(has_text="緯度経度入力").click()
-    page.wait_for_timeout(100)
+    page.wait_for_timeout(500)  # Wait for UI to update
 
     # Enter marker name
     marker_name_input = page.get_by_placeholder("例: CP1, エイドステーション")
     marker_name_input.fill("テストマーカー")
 
     # Enter coordinates (use coordinates from sample GPX)
+    # Streamlit number_input requires special handling - clear and type
     lat_input = page.locator("input[aria-label='緯度']")
     lon_input = page.locator("input[aria-label='経度']")
 
-    lat_input.fill("35.37")
-    lon_input.fill("138.735")
+    # Clear existing values and type new ones
+    # Click to focus, clear, type new value, and press Enter to commit
+    lat_input.click()
+    lat_input.fill("")
+    lat_input.type("35.37", delay=50)
+    lat_input.press("Enter")
+    page.wait_for_timeout(300)  # Wait for Streamlit to process the change
+
+    lon_input.click()
+    lon_input.fill("")
+    lon_input.type("138.735", delay=50)
+    lon_input.press("Enter")
+    page.wait_for_timeout(300)  # Wait for Streamlit to process the change
 
     # Click add marker button
     add_button = page.get_by_role("button", name="マーカーを追加")
     add_button.click()
 
-    # Wait for marker to be added and page to rerender
-    page.wait_for_timeout(100)
+    # Wait for Streamlit rerun to complete
+    # First check if marker count increased (more reliable)
+    page.wait_for_timeout(1000)  # Wait for rerun to start
 
-    # Check success message appeared
-    expect(page.locator("text=マーカー 'テストマーカー' を追加しました").first).to_be_visible()
+    # Wait for marker count to update (should go from 2 to 3)
+    # Check for "登録済みマーカー: 3個" text
+    marker_count_text = page.get_by_text("登録済みマーカー: 3個", exact=False)
+    expect(marker_count_text.first).to_be_visible(timeout=10000)
 
-    # Verify marker was added - should now have 3 markers total
-    # スタート, テストマーカー, ゴール (inserted before last)
-    # Check in marker list (format: "2. テストマーカー (35.370000, 138.735000) - 1.27km")
-    # Use get_by_text with partial match to find the marker in the list
+    # Then check for the marker in the list
     marker_text = page.get_by_text("2. テストマーカー", exact=False)
-    expect(marker_text.first).to_be_visible()
+    expect(marker_text.first).to_be_visible(timeout=5000)
+
+    # Check success message appeared (after marker is confirmed to be added)
+    success_message = page.locator("text=マーカー 'テストマーカー' を追加しました").first
+    expect(success_message).to_be_visible(timeout=5000)
 
 
 @pytest.mark.e2e

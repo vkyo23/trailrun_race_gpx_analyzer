@@ -60,7 +60,7 @@ class TestGPXService:
         """Test adding markers."""
         service = GPXService()
         service.load_from_file(sample_gpx_bytes)
-        
+
         # Clear auto-added markers (スタート and ゴール)
         service.clear_markers()
 
@@ -83,7 +83,7 @@ class TestGPXService:
         """Test removing markers."""
         service = GPXService()
         service.load_from_file(sample_gpx_bytes)
-        
+
         # Clear auto-added markers (スタート and ゴール)
         service.clear_markers()
 
@@ -116,7 +116,7 @@ class TestGPXService:
         """Test getting segments between markers."""
         service = GPXService()
         service.load_from_file(sample_gpx_bytes)
-        
+
         # Clear auto-added markers (スタート and ゴール)
         service.clear_markers()
 
@@ -136,7 +136,7 @@ class TestGPXService:
         """Test getting a specific segment."""
         service = GPXService()
         service.load_from_file(sample_gpx_bytes)
-        
+
         # Clear auto-added markers (スタート and ゴール)
         service.clear_markers()
 
@@ -154,7 +154,7 @@ class TestGPXService:
         """Test getting segments as DataFrame."""
         service = GPXService()
         service.load_from_file(sample_gpx_bytes)
-        
+
         # Clear auto-added markers (スタート and ゴール)
         service.clear_markers()
 
@@ -176,7 +176,7 @@ class TestGPXService:
         """Test getting segments DataFrame with no markers."""
         service = GPXService()
         service.load_from_file(sample_gpx_bytes)
-        
+
         # Clear auto-added markers (スタート and ゴール)
         service.clear_markers()
 
@@ -189,7 +189,7 @@ class TestGPXService:
         """Test resetting the service."""
         service = GPXService()
         service.load_from_file(sample_gpx_bytes)
-        
+
         # Clear auto-added markers (スタート and ゴール)
         service.clear_markers()
         service.add_marker("Test", 35.3606, 138.7274)
