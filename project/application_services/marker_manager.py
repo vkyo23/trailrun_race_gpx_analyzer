@@ -66,12 +66,7 @@ class MarkerManager:
         track_point = self.analyzer.find_nearest_point(latitude, longitude)
 
         # Determine insertion position
-        if insert_before_last and len(self.markers) >= 1:
-            # Insert before the last marker (typically the goal)
-            insert_position = len(self.markers) - 1
-        else:
-            # Append to the end
-            insert_position = len(self.markers)
+        insert_position = len(self.markers) - 1 if insert_before_last and len(self.markers) >= 1 else len(self.markers)
 
         # Create marker
         marker = Marker(

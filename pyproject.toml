@@ -57,6 +57,8 @@ ignore = [
     "D",
     "ANN",
     "G004",
+    "FBT001",
+    "FBT002",
 ]
 exclude = [
     ".git",
