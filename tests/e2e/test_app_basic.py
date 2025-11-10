@@ -137,23 +137,30 @@ def test_add_marker_with_coordinates(page: Page, sample_gpx_file) -> None:
     marker_name_input.fill("テストマーカー")
 
     # Enter coordinates (use coordinates from sample GPX)
-    # Streamlit number_input requires special handling - clear and type
+    # Streamlit number_input requires special handling
+    # We need to trigger Streamlit's rerun by blurring the input field
     lat_input = page.locator("input[aria-label='緯度']")
     lon_input = page.locator("input[aria-label='経度']")
 
     # Clear existing values and type new ones
-    # Click to focus, clear, type new value, and press Enter to commit
+    # Select all, delete, type new value, then blur to trigger Streamlit rerun
     lat_input.click()
-    lat_input.fill("")
+    lat_input.press("Control+a")  # Select all (Command+a on Mac, but Control works on both)
     lat_input.type("35.37", delay=50)
-    lat_input.press("Enter")
-    page.wait_for_timeout(300)  # Wait for Streamlit to process the change
+    # Blur the input to trigger Streamlit's change detection
+    marker_name_input.click()  # Click elsewhere to blur
+    page.wait_for_timeout(500)  # Wait for Streamlit to process the change and rerun
 
     lon_input.click()
-    lon_input.fill("")
+    lon_input.press("Control+a")  # Select all
     lon_input.type("138.735", delay=50)
-    lon_input.press("Enter")
-    page.wait_for_timeout(300)  # Wait for Streamlit to process the change
+    # Blur the input to trigger Streamlit's change detection
+    marker_name_input.click()  # Click elsewhere to blur
+    page.wait_for_timeout(500)  # Wait for Streamlit to process the change and rerun
+
+    # Verify no error messages are shown before adding marker
+    error_messages = page.locator("text=座標を指定してください")
+    expect(error_messages).not_to_be_visible()
 
     # Click add marker button
     add_button = page.get_by_role("button", name="マーカーを追加")
