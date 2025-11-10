@@ -56,7 +56,7 @@ uv sync
 uv run streamlit run app.py
 ```
 
-4. Open your browser and navigate to `http://localhost:8080`
+4. Open your browser and navigate to `http://localhost:8501`
 
 ### Docker Setup
 
@@ -65,7 +65,7 @@ uv run streamlit run app.py
 docker compose up --build
 ```
 
-2. Access the application at `http://localhost:8080`
+2. Access the application at `http://localhost:8501`
 
 ## Usage
 
