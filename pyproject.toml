@@ -1,0 +1,88 @@
+[project]
+name = "trailrun_race_gpx_analyzer"
+version = "0.0.1"
+description = "Trail Running Race GPX Analyzer - Analyze GPX files for trail running races with segment analysis and elevation calculation"
+readme = "README.md"
+requires-python = ">=3.13"
+license = {text = "MIT"}
+dependencies = [
+    "gpxpy>=1.6.2",
+    "numpy>=2.2.3",
+    "scipy>=1.15.2",
+    "polars>=1.35.2",
+    "pydantic>=2.12.4",
+    "pydantic-settings>=2.11.0",
+    "streamlit>=1.51.0",
+    "folium>=0.18.0",
+    "streamlit-folium>=0.24.0",
+    "plotly>=6.0.0",
+    "requests>=2.32.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.10",
+    "mypy>=1.9.0,<2.0.0",
+    "pytest>=8.1.1,<9.0.0",
+    "pytest-playwright>=0.7.0",
+    "python-dotenv>=1.0.1,<2.0.0",
+    "types-requests>=2.31.0",
+]
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+check_untyped_defs = true
+ignore_errors = false
+strict_optional = true
+warn_unused_configs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+ignore_missing_imports = true
+
+[tool.ruff]
+target-version = "py313"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "PLR0913",
+    "COM812",
+    "E741",
+    "ISC001",
+    "S101",
+    "S311",
+    "RET504",
+    "PLR2004",
+    "D",
+    "ANN",
+    "G004",
+    "FBT001",
+    "FBT002",
+]
+exclude = [
+    ".git",
+    ".github",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    "__pycache__",
+]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/**/*.py" = ["SLF001"]
+
+[tool.pytest.ini_options]
+minversion = "6.2.5"
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "e2e: End-to-end tests (require running application)",
+    "unit: Unit tests",
+]
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+]

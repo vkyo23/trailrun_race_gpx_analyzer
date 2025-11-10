@@ -1,0 +1,19 @@
+[global]
+developmentMode = false
+
+[server]
+port = 8080
+runOnSave = false
+headless = true
+
+[browser]
+gatherUsageStats = false
+serverAddress = "0.0.0.0"
+
+[client]
+showErrorDetails = false
+toolbarMode = "minimal"
+
+[ui]
+hideTopBar = true
+
