@@ -18,7 +18,7 @@ def streamlit_app():
     """
     Start the Streamlit application for e2e tests.
 
-    This fixture starts the app on port 8080 and waits for it to be ready.
+    This fixture starts the app on port 8501 and waits for it to be ready.
     After all tests complete, it shuts down the server.
 
     Yields:
@@ -31,17 +31,25 @@ def streamlit_app():
         raise RuntimeError(msg)
 
     process = subprocess.Popen(  # noqa: S603
-        [uv_path, "run", "streamlit", "run", "app.py", "--server.port=8080", "--server.headless=true"],
+        [uv_path, "run", "streamlit", "run", "app.py", "--server.port=8501", "--server.headless=true"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
 
     # Wait for app to be ready (max 30 seconds)
-    app_url = "http://localhost:8080"
+    app_url = "http://localhost:8501"
     max_retries = 60
     retry_delay = 0.5
 
     for _ in range(max_retries):
+        # Check if process is still running
+        if process.poll() is not None:
+            # Process has terminated, read error output
+            _, stderr_output = process.communicate()
+            error_msg = stderr_output.decode("utf-8") if stderr_output else "Unknown error"
+            msg = f"Streamlit app process terminated unexpectedly. Error: {error_msg}"
+            raise RuntimeError(msg)
+
         try:
             response = requests.get(app_url, timeout=1)
             if response.status_code == 200:
@@ -49,9 +57,11 @@ def streamlit_app():
         except (requests.ConnectionError, requests.Timeout):
             time.sleep(retry_delay)
     else:
+        # Timeout - get error output before terminating
         process.terminate()
-        process.wait()
-        msg = "Streamlit app failed to start within timeout period"
+        _, stderr_output = process.communicate(timeout=5)
+        error_msg = stderr_output.decode("utf-8") if stderr_output else "No error output"
+        msg = f"Streamlit app failed to start within timeout period. Error: {error_msg}"
         raise RuntimeError(msg)
 
     yield app_url

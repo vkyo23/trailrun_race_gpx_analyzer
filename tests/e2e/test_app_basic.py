@@ -17,7 +17,7 @@ def test_app_loads(page: Page) -> None:
         page: Playwright page fixture
     """
     # Navigate to the app
-    page.goto("http://localhost:8080")
+    page.goto("http://localhost:8501")
 
     # Wait for the app to load
     page.wait_for_selector("h1", timeout=10000)
@@ -34,7 +34,7 @@ def test_tabs_exist(page: Page) -> None:
     Args:
         page: Playwright page fixture
     """
-    page.goto("http://localhost:8080")
+    page.goto("http://localhost:8501")
     page.wait_for_selector("h1", timeout=10000)
 
     # Check for tabs
@@ -50,7 +50,7 @@ def test_gpx_analysis_tab_content(page: Page) -> None:
     Args:
         page: Playwright page fixture
     """
-    page.goto("http://localhost:8080")
+    page.goto("http://localhost:8501")
     page.wait_for_selector("h1", timeout=10000)
 
     # Click on GPX analysis tab
@@ -71,7 +71,7 @@ def test_help_tab_content(page: Page) -> None:
     Args:
         page: Playwright page fixture
     """
-    page.goto("http://localhost:8080")
+    page.goto("http://localhost:8501")
     page.wait_for_selector("h1", timeout=10000)
 
     # Click on help tab
@@ -91,7 +91,7 @@ def test_upload_methods_toggle(page: Page) -> None:
     Args:
         page: Playwright page fixture
     """
-    page.goto("http://localhost:8080")
+    page.goto("http://localhost:8501")
     page.wait_for_selector("h1", timeout=10000)
 
     # Should start with local file option (look for file uploader widget)
