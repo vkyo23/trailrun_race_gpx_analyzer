@@ -72,7 +72,7 @@ docker compose up --build
 ### 1. Upload a GPX File
 
 **From Local File:**
-- Click "����ա��" (Local File)
+- Click "ローカルファイル" (Local File)
 - Select your GPX file
 - Wait for the file to load
 
