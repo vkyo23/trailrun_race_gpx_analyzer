@@ -2,7 +2,7 @@ name: python-ci
 
 on:
   pull_request:
-    types: [synchronize, opend]
+    types: [synchronize, opened]
 
 jobs:
   lint-and-type-check:
